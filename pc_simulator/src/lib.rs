@@ -48,8 +48,8 @@ pub fn run_simulation_and_get_cost(gains: &[f32; 6]) -> f32 {
         let mut pos_filter = ActiveFilter::Kalman(KalmanFilter::new(0.01, 1.0, curr_pos));
         let mut angle_filter = ComplementaryFilter::new(0.02, curr_angle);
 
-        // Simulate 10 seconds (1000 ticks)
-        for _step in 0..1000 {
+        // Simulate 20 seconds (2000 ticks)
+        for _step in 0..2000 {
             // --- 1. SIMULATE NOISY SENSOR ---
             let pos_noise: f32 = rng.random_range(-1.0..1.0);
             let noisy_sensor_pos = curr_pos + pos_noise;
@@ -91,7 +91,16 @@ pub fn run_simulation_and_get_cost(gains: &[f32; 6]) -> f32 {
                 // This tells the AI: "It's okay to crash, as long as you were close to the target."
                 let distance_at_failure = (target_pos - curr_pos).abs();
                 episode_cost += 1000.0 + (distance_at_failure * 10.0);
+
+                // Penalty scales heavily with how early it crashed
+                let remaining_steps = (2000 - _step) as f32;
+                episode_cost += 10_000.0 + (remaining_steps * 500.0);
                 break;
+            }
+
+            // if filters warming up, exit without penalty
+            if _step < 100 {
+                continue;
             }
 
             // --- LQR COST ACCUMULATION ---

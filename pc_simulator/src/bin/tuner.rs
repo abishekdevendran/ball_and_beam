@@ -143,7 +143,7 @@ fn main() {
     ];
 
     let mut optimizer = SwarmOptimizer {
-        particles: (0..20000)
+        particles: (0..10000)
             .map(|_| Particle::new(&bounds, &mut rand::rng()))
             .collect(),
         global_best_pos: [0.0; DIMENSIONS],
