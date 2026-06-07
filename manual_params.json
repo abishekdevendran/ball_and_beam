@@ -1,0 +1,8 @@
+{
+	"outer_p": 0.0069,
+	"outer_i": 0.0005,
+	"outer_d": 0.005,
+	"inner_p": 10.0,
+	"inner_i": 0.1,
+	"inner_d": 0.0
+}

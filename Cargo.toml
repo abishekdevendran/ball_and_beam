@@ -1,0 +1,7 @@
+# ball_and_beam/Cargo.toml
+[workspace]
+resolver = "3"
+members = [
+    "pid_core",
+    "pc_simulator"
+]
